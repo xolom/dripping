@@ -1,0 +1,7 @@
+web3
+python-telegram-bot
+colorlog
+strip_ansi
+click
+colorama
+tinydb

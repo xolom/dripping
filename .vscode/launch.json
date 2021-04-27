@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Dripping reinvest",
+            "type": "python",
+            "request": "launch",
+            "module": "dripping_reinvest",
+            "args": [
+                "--config", "config/dripping_reinvest.json",
+                "--verbose"
+            ]
+        }
+    ]
+}
