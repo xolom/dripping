@@ -40,9 +40,9 @@ class DrippingReinvest():
         dividends_thres_reached = dividends_percent > self._db.dividends_threshold
 
         if balance != self._cached_balance or dividends != self._cached_dividends or daily_stimate != self._cached_daily_estimate:
-            self._cached_balance        = balance
-            self._cached_dividends      = dividends
-            self._cached_daily_estimate = daily_stimate
+            self._cached_balance        = round(balance, 2)
+            self._cached_dividends      = round(dividends, 2)
+            self._cached_daily_estimate = round(daily_stimate, 2)
 
             drip_price = get_usd_per_drip(self._w3)
 
