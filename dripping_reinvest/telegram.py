@@ -72,7 +72,7 @@ class TelegramBot():
     def _cmd_drip_price(self, update: Update, context: CallbackContext) -> None:
         update.message.reply_markdown(f'`DRIP price: ${get_usd_per_drip(self._w3):.2f}`')
 
-    def _parse_float_arg(msg: Message, args: List[str]) -> Optional[float]:
+    def _parse_float_arg(self, msg: Message, args: List[str]) -> Optional[float]:
         if len(args) != 1:
             msg.reply_markdown('Invalid number of arguments!')
             return None
