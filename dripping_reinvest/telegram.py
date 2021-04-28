@@ -62,6 +62,7 @@ class TelegramBot():
         dispatcher.add_error_handler(self._error_handler)
         dispatcher.add_handler(CommandHandler("drip_price", self._cmd_drip_price))
         dispatcher.add_handler(CommandHandler("set_dividends_thres", self._set_dividends_thres))
+        dispatcher.add_handler(CommandHandler("get_dividends_thres", self._get_dividends_thres))
 
     def _init_logger(self) -> None:
         lh = TelegramLogHandler(self)
@@ -85,12 +86,16 @@ class TelegramBot():
         return val
 
     @exception_decorator()
+    def _get_dividends_thres(self, update: Update, context: CallbackContext) -> None:
+        msg = update.message or update.edited_message
+        msg.reply_markdown(f'`Dividends threshold: {self._db.dividends_threshold}%`')
+
+    @exception_decorator()
     def _set_dividends_thres(self, update: Update, context: CallbackContext) -> None:
         msg = update.message or update.edited_message
         val = self._parse_float_arg(msg, context.args)
         if val:
             self._db.dividends_threshold = val
-            msg.reply_markdown('Dividends threshold changed!')
 
     @exception_decorator()
     def send_message(self, msg: str) -> None:

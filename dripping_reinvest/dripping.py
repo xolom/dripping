@@ -1,4 +1,5 @@
-from typing import cast
+
+from typing import cast, Optional
 from functools import wraps
 from hexbytes import HexBytes
 from eth_account.signers.local import LocalAccount
@@ -6,9 +7,9 @@ from web3 import Web3, contract
 
 from . import Func, exception_decorator, log
 from .constants import DRIP_STAKING_CONTRACT_ADDR, DRIP_STAKING_ABI_FILE
-from .utils import calc_token_value
+from .utils import calc_token_value, get_usd_per_bnb, get_drip_per_bnb
 from .contract import Contract
-from .token import DripTokenContract
+from .token import DripTokenContract, WBNBTokenContract
 
 """
 Dripping staking contract class for convinient usage of contract interaction
@@ -35,12 +36,24 @@ class DripStakingContract(Contract):
         return self._contract.functions.dailyEstimate(address).call()
 
     @exception_decorator()
-    def reinvest(self, address: str, gwei: int, private_key: bytes) -> HexBytes:
+    def reinvest(self, address: str, gwei: int, private_key: bytes) -> Optional[HexBytes]:
         transaction = self._contract.functions.reinvest().buildTransaction({
             'from':     address,
             'gasPrice': self._w3.toWei(gwei, 'gwei'),
             'nonce':    self._w3.eth.get_transaction_count(address)
         })
+        tx_fee_bnb = calc_token_value(transaction['gas'] * transaction['gasPrice'], WBNBTokenContract(self._w3).decimals)
+        tx_fee_usd = tx_fee_bnb * get_usd_per_bnb(self._w3)
+
+        log.debug(f'Transaction fee: {tx_fee_bnb:.5f} BNB / ${tx_fee_usd:.2f}')
+
+        dividends_drip = calc_token_value(self.dividends(address), DripTokenContract(self._w3).decimals)
+        dividends_bnb  = dividends_drip / get_drip_per_bnb(self._w3)
+
+        if tx_fee_bnb >= dividends_bnb:
+            log.warning(f'Transaction fees are higher than dividends, you may want to incease dividends threshold.')
+            return None
+
         signed_tx = self._w3.eth.account.sign_transaction(transaction, private_key=private_key)
         tx = self._w3.eth.send_raw_transaction(signed_tx.rawTransaction)
         log.debug(f'Processing transaction: {tx.hex()}')
