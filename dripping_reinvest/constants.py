@@ -2,7 +2,7 @@ from pathlib import Path
 _package_path = Path(__file__).parent
 
 INFURA_URL                  = 'https://bsc-dataseed1.binance.org:443'
-TRANSACTION_GWEI            = 10
+TRANSACTION_GWEI            = 5
 POLL_INTERVAL               = 5 * 60.0 # seconds
 DB_JSON_FILE                = _package_path / 'database.json'
 DRIP_TOKEN_ABI_FILE         = _package_path / 'abi/drip_token_contract.json'

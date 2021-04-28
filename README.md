@@ -52,8 +52,9 @@ There is also support for telegram bots. To get a bot, contact `@BotFather` in t
 To get your telegram user ID, contact `@userinfobot`. Put those IDs into the configuration JSON file accordingly.
 
 The bot supports following commands currently:
-* `/drip_price` This command returns the current DRIP price in USD
-* `/set_dividends_thres` This command sets the dividends threshold in percent
+* `/drip_price` Return current DRIP price in USD
+* `/get_dividends_thres` Show current dividends threshold
+* `/set_dividends_thres` Set dividends threshold in percent
 
 ## Appendix
 
