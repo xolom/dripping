@@ -32,4 +32,5 @@ class Database():
     @dividends_threshold.setter
     def dividends_threshold(self, value: float) -> None:
         self._db.update(dict(self._dict, dividends_threshold=value))
+        log.info(f'Dividends threshold changed to: {value}%')
 
