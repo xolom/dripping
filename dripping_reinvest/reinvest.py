@@ -53,6 +53,6 @@ class DrippingReinvest():
                           f'Daily est: {daily_stimate:.2f} DRIP / ${daily_stimate * drip_price:.2f} ({daily_estimate_percent}%)')
 
         if dividends_thres_reached:
-            log.info('Reinvesting..')
+            log.info('Reinvesting')
             if self._dripping_account.reinvest(TRANSACTION_GWEI):
                 log.info(f'{dividends:.2f} DRIP reinvested')
