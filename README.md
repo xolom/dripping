@@ -1,7 +1,7 @@
 # Dripping auto reinvest
 
 This tool enables automatic reinvesting for dripping with telegram bot support.
-Per default reinvesting is done if there are more than 0.2% dividends.
+Per default reinvesting is done if there are more than 0.5% dividends.
 
 ## Configuration
 
