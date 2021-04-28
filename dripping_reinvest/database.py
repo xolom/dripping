@@ -3,13 +3,20 @@ from pathlib import Path
 from typing import cast
 from tinydb import TinyDB
 from . import Func, die, exception_decorator, log
+from .constants import INITIAL_DIVIDENDS_THRESHOLD
 
 class Database():
 
     def __init__(self, json_file: Path) -> None:
-        if not json_file.is_file():
-            die(f'Database json does not exist: {json_file}')
         self._db = TinyDB(json_file)
+        if not self._db.all():
+            log.debug('Empty databse, initializing..')
+            self._init_database()
+
+    def _init_database(self):
+        self._db.insert({
+            'dividends_threshold': INITIAL_DIVIDENDS_THRESHOLD
+        })
 
     @property
     def _dict(self) -> dict:
@@ -31,6 +38,6 @@ class Database():
 
     @dividends_threshold.setter
     def dividends_threshold(self, value: float) -> None:
-        self._db.update(dict(self._dict, dividends_threshold=value))
+        self._db.update({'dividends_threshold': value})
         log.info(f'Dividends threshold changed to: {value}%')
 

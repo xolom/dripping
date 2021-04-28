@@ -2,3 +2,4 @@ __pycache__/
 *.py[cod]
 
 config/dripping_reinvest.json
+dripping_reinvest/database.json
