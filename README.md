@@ -67,7 +67,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/path/to/repo
-ExecStart=bash start.sh
+ExecStart=bash start.sh --config /path/to/config.json
 Restart=always
 
 [Install]
