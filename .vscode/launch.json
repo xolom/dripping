@@ -7,7 +7,7 @@
             "request": "launch",
             "module": "dripping_reinvest",
             "args": [
-                "--config", "config/dripping_reinvest.json",
+                "--config", "config/dripping_reinvest_active.json",
                 "--verbose"
             ]
         }
