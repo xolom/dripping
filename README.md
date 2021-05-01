@@ -6,7 +6,6 @@ Per default reinvesting is done if there are more than 0.5% dividends.
 ## Configuration
 
 Following configurations can be made:
-* Infura URL
 * Private key (from Metamask for instance)
 * Telegram bot token (optional)
 * Telegram user (user id where the bot should send messages to)
