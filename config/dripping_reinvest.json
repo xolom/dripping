@@ -1,7 +1,5 @@
 {
     "private_key": "",
     "telegram_token": "",
-    "telegram_users": [
-        ""
-    ]
+    "telegram_user": ""
 }
