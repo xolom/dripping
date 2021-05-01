@@ -48,9 +48,9 @@ class DrippingReinvest():
 
             dividends_color = Fore.CYAN if dividends_thres_reached else ''
             dividends_reset = Style.RESET_ALL if dividends_color else ''
-            log.important(f'Balance: {balance:.2f} DRIP / ${balance * drip_price:.2f}, '
-                          f'{dividends_color}Dividends: {dividends:.2f} DRIP / ${dividends * drip_price:.2f} ({dividends_percent}%){dividends_reset}, '
-                          f'Daily est: {daily_stimate:.2f} DRIP / ${daily_stimate * drip_price:.2f} ({daily_estimate_percent}%)')
+            log.sticky(f'Balance: {balance:.2f} DRIP / ${balance * drip_price:.2f}, '
+                       f'{dividends_color}Dividends: {dividends:.2f} DRIP / ${dividends * drip_price:.2f} ({dividends_percent}%){dividends_reset}, '
+                       f'Daily est: {daily_stimate:.2f} DRIP / ${daily_stimate * drip_price:.2f} ({daily_estimate_percent}%)')
 
         if dividends_thres_reached:
             log.info('Reinvesting')

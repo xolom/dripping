@@ -7,14 +7,14 @@ import logging
 from functools import wraps
 from typing import Any, Callable, TypeVar, cast
 
-IMPORTANT_LEVELNO = 21
+STICKY_LEVELNO = 21
 
-def _important(self, message: str, *args, **kws) -> None:
-    if self.isEnabledFor(IMPORTANT_LEVELNO):
-        self._log(IMPORTANT_LEVELNO, message, args, **kws)
+def _sticky(self, message: str, *args, **kws) -> None:
+    if self.isEnabledFor(STICKY_LEVELNO):
+        self._log(STICKY_LEVELNO, message, args, **kws)
 
-logging.addLevelName(IMPORTANT_LEVELNO, "INFO")
-logging.Logger.important = _important
+logging.addLevelName(STICKY_LEVELNO, "INFO")
+logging.Logger.sticky = _sticky
 
 Func = TypeVar('Func', bound=Callable[..., Any])
 

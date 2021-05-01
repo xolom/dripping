@@ -7,7 +7,7 @@ from telegram.constants import PARSEMODE_MARKDOWN
 from telegram.message import Message
 from web3 import Web3
 
-from . import exception_decorator, log, IMPORTANT_LEVELNO
+from . import exception_decorator, log, STICKY_LEVELNO
 from .database import Database
 from .utils import parse_float, get_usd_per_drip
 
@@ -20,7 +20,7 @@ class TelegramLogFormatter(logging.Formatter):
         if record.levelno in [logging.ERROR, logging.WARNING]:
             record.msg = f'{record.levelname}: {record.msg}'
 
-        if record.levelno == IMPORTANT_LEVELNO:
+        if record.levelno == STICKY_LEVELNO:
             record.msg = record.msg.replace(', ', '\n')
 
         record.msg = f'`{strip_ansi(record.msg)}`'
@@ -37,7 +37,7 @@ class TelegramLogHandler(logging.StreamHandler):
         self._bot = bot
 
     def emit(self, record: logging.LogRecord) -> None:
-        self._bot.send_message(self.format(record), True if record.levelno == IMPORTANT_LEVELNO else False)
+        self._bot.send_message(self.format(record), record.levelno == STICKY_LEVELNO)
 
 """
 Telegram bot wrapper class for convinient bot usage with pre-defined user
