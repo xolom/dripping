@@ -1,5 +1,5 @@
 __pycache__/
 *.py[cod]
 
-config/dripping_reinvest.json
+config/*
 dripping_reinvest/database.json
