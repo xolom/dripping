@@ -1,5 +1,6 @@
 import os
 import sys
+import traceback
 import atexit
 import colorlog
 import logging
@@ -49,9 +50,11 @@ def exception_decorator(die_enabled=False) -> Func:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
+                exc_frame = traceback.extract_stack()[-2]
+                exc_msg   = f'{os.path.basename(exc_frame.filename)}:{exc_frame.lineno}:{exc_frame.name}(): {e}'
                 if die_enabled:
-                    die(e)
-                log.error(e)
+                    die(exc_msg)
+                log.error(exc_msg)
         return cast(Func, wrapper)
     return cast(Func, actual_exception_decorator)
 
