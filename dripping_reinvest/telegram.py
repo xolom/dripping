@@ -37,18 +37,19 @@ class TelegramLogHandler(logging.StreamHandler):
         self._bot = bot
 
     def emit(self, record: logging.LogRecord) -> None:
-        self._bot.send_message(self.format(record))
+        self._bot.send_message(self.format(record), True if record.levelno == IMPORTANT_LEVELNO else False)
 
 """
-Telegram bot wrapper class for convinient bot usage with pre-defined users
+Telegram bot wrapper class for convinient bot usage with pre-defined user
 """
 class TelegramBot():
 
-    def __init__(self, db: Database, w3: Web3, token: str, users: List[Union[str, int]]) -> None:
-        self._db    = db
-        self._w3    = w3
-        self._bot   = Updater(token)
-        self._users = users
+    def __init__(self, db: Database, w3: Web3, token: str, user: Union[str, int]) -> None:
+        self._db         = db
+        self._w3         = w3
+        self._bot        = Updater(token)
+        self._user       = user
+        self._sticky_msg = None
         self._init_logger()
         self._init_commands()
         self._bot.logger.disabled = True
@@ -98,6 +99,11 @@ class TelegramBot():
             self._db.dividends_threshold = val
 
     @exception_decorator()
-    def send_message(self, msg: str) -> None:
-        for user in self._users:
-            self._bot.bot.send_message(user, text=msg, parse_mode=PARSEMODE_MARKDOWN)
+    def send_message(self, msg: str, sticky = False) -> None:
+        if sticky and self._sticky_msg:
+            self._sticky_msg.delete()
+
+        message = self._bot.bot.send_message(self._user, text=msg, parse_mode=PARSEMODE_MARKDOWN)
+
+        if sticky:
+            self._sticky_msg = message

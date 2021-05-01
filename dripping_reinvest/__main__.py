@@ -50,8 +50,8 @@ def main(config: SimpleNamespace, verbose: bool):
 
     telegram_bot = None
     if  hasattr(config, 'telegram_token') and config.telegram_token \
-    and hasattr(config, 'telegram_users') and config.telegram_users:
-        telegram_bot = TelegramBot(db, w3, config.telegram_token, config.telegram_users)
+    and hasattr(config, 'telegram_user') and config.telegram_user:
+        telegram_bot = TelegramBot(db, w3, config.telegram_token, config.telegram_user)
 
     log.debug(f"Telegram bot {'enabled' if telegram_bot else 'disabled'}")
 
