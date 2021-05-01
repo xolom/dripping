@@ -9,7 +9,7 @@ Following configurations can be made:
 * Infura URL
 * Private key (from Metamask for instance)
 * Telegram bot token (optional)
-* Telegram users (user ids where the bot should send messages to)
+* Telegram user (user id where the bot should send messages to)
 
 The configuration is done inside [config/dripping_reinvest.json](config/dripping_reinvest.json) and can be stored anywhere.
 
