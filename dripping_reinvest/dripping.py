@@ -36,6 +36,10 @@ class DripStakingContract(Contract):
         return self._contract.functions.dailyEstimate(address).call()
 
     @exception_decorator()
+    def stats(self, address: str) -> int:
+        return self._contract.functions.statsOf(address).call()
+
+    @exception_decorator()
     def reinvest(self, address: str, gwei: int, private_key: bytes) -> Optional[HexBytes]:
         transaction = self._contract.functions.reinvest().buildTransaction({
             'from':     address,
@@ -99,6 +103,11 @@ class DrippingAccount():
     @_balance_decorator
     def daily_stimate(self) -> float:
         return self._drip_staking_contract.daily_estimate(self.address)
+
+    @property
+    @_balance_decorator
+    def reinvested(self) -> float:
+        return self._drip_staking_contract.stats(self.address)[12]
 
     def reinvest(self, gwei: int) -> HexBytes:
         return self._drip_staking_contract.reinvest(self.address, gwei, self._account.key)
