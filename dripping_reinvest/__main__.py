@@ -48,15 +48,15 @@ def main(config: SimpleNamespace, verbose: bool):
     w3 = _init_w3(INFURA_URL)
     db = Database(DB_JSON_FILE)
 
+    dripping_account = DrippingAccount(DripStakingContract(w3), DripTokenContract(w3), config.private_key)
+    log.debug(f'Using dripping account address: {dripping_account.address}')
+
     telegram_bot = None
     if  hasattr(config, 'telegram_token') and config.telegram_token \
     and hasattr(config, 'telegram_user') and config.telegram_user:
-        telegram_bot = TelegramBot(db, w3, config.telegram_token, config.telegram_user)
+        telegram_bot = TelegramBot(db, w3, dripping_account, config.telegram_token, config.telegram_user)
 
     log.debug(f"Telegram bot {'enabled' if telegram_bot else 'disabled'}")
-
-    dripping_account = DrippingAccount(DripStakingContract(w3), DripTokenContract(w3), config.private_key)
-    log.debug(f'Using dripping account address: {dripping_account.address}')
 
     DrippingReinvest(db, w3, dripping_account).run_interval(POLL_INTERVAL)
 

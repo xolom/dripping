@@ -55,4 +55,4 @@ class DrippingReinvest():
         if dividends_thres_reached:
             log.info('Reinvesting')
             if self._dripping_account.reinvest(TRANSACTION_GWEI):
-                log.info(f'{dividends:.2f} DRIP reinvested. (Total reinvested: {self._dripping_account.reinvested:.2f} DRIP)')
+                log.info(f'{dividends:.2f} DRIP reinvested')

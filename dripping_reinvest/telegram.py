@@ -9,6 +9,7 @@ from web3 import Web3
 
 from . import exception_decorator, log, STICKY_LEVELNO
 from .database import Database
+from .dripping import DrippingAccount
 from .utils import parse_float, get_usd_per_drip
 
 """
@@ -44,9 +45,10 @@ Telegram bot wrapper class for convinient bot usage with pre-defined user
 """
 class TelegramBot():
 
-    def __init__(self, db: Database, w3: Web3, token: str, user: Union[str, int]) -> None:
+    def __init__(self, db: Database, w3: Web3, drip_acc: DrippingAccount, token: str, user: Union[str, int]) -> None:
         self._db         = db
         self._w3         = w3
+        self._drip_acc   = drip_acc
         self._bot        = Updater(token)
         self._user       = user
         self._sticky_msg = None
@@ -62,6 +64,7 @@ class TelegramBot():
         dispatcher = self._bot.dispatcher
         dispatcher.add_error_handler(self._error_handler)
         dispatcher.add_handler(CommandHandler("drip_price", self._cmd_drip_price))
+        dispatcher.add_handler(CommandHandler("total_reinvested", self._cmd_total_reinvested))
         dispatcher.add_handler(CommandHandler("set_dividends_thres", self._set_dividends_thres))
         dispatcher.add_handler(CommandHandler("get_dividends_thres", self._get_dividends_thres))
 
@@ -69,10 +72,6 @@ class TelegramBot():
         lh = TelegramLogHandler(self)
         lh.setFormatter(TelegramLogFormatter())
         log.addHandler(lh)
-
-    @exception_decorator()
-    def _cmd_drip_price(self, update: Update, context: CallbackContext) -> None:
-        update.message.reply_markdown(f'`DRIP price: ${get_usd_per_drip(self._w3):.2f}`')
 
     def _parse_float_arg(self, msg: Message, args: List[str]) -> Optional[float]:
         if len(args) != 1:
@@ -85,6 +84,14 @@ class TelegramBot():
             return None
 
         return val
+
+    @exception_decorator()
+    def _cmd_drip_price(self, update: Update, context: CallbackContext) -> None:
+        update.message.reply_markdown(f'`DRIP price: ${get_usd_per_drip(self._w3):.2f}`')
+
+    @exception_decorator()
+    def _cmd_total_reinvested(self, update: Update, context: CallbackContext) -> None:
+        update.message.reply_markdown(f'`Total reinvested: {self._drip_acc.reinvested:.2f} DRIP`')
 
     @exception_decorator()
     def _get_dividends_thres(self, update: Update, context: CallbackContext) -> None:

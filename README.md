@@ -52,6 +52,7 @@ To get your telegram user ID, contact `@userinfobot`. Put those IDs into the con
 
 The bot supports following commands currently:
 * `/drip_price` Return current DRIP price in USD
+* `/total_reinvested` Show total reinvested DRIP
 * `/get_dividends_thres` Show current dividends threshold
 * `/set_dividends_thres` Set dividends threshold in percent
 
