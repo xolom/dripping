@@ -1,3 +1,4 @@
+from dripping_reinvest import exception_decorator
 from typing import Optional
 from web3 import Web3
 
@@ -17,7 +18,7 @@ def parse_float(string: str) -> Optional[float]:
 Convert a contracts token amount to correct value with decimals
 """
 def calc_token_value(tokens: int, decimals: int) -> float:
-    return tokens * 10 ** -decimals
+    return tokens * 10 ** -decimals if decimals else 0
 
 """
 Get BUSD per WBNB from LP contract

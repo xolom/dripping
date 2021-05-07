@@ -79,6 +79,7 @@ class DrippingAccount():
         self._account: LocalAccount = staking_contract.w3.eth.account.privateKeyToAccount(private_key)
 
     def _balance_decorator(func: Func) -> Func:
+        @exception_decorator()
         @wraps(func)
         def wrapper(self):
             res = func(self) or 0
