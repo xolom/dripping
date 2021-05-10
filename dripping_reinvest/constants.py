@@ -3,7 +3,6 @@ _package_path = Path(__file__).parent
 
 INFURA_URL                  = 'https://bsc-dataseed1.binance.org:443'
 INITIAL_DIVIDENDS_THRESHOLD = 0.5
-TRANSACTION_GWEI            = 7
 POLL_INTERVAL               = 5 * 60.0 # seconds
 DB_JSON_FILE                = _package_path / 'database.json'
 DRIP_TOKEN_ABI_FILE         = _package_path / 'abi/drip_token_contract.json'

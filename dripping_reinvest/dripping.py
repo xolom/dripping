@@ -43,7 +43,6 @@ class DripStakingContract(Contract):
     def reinvest(self, address: str, gwei: int, private_key: bytes) -> Optional[HexBytes]:
         transaction = self._contract.functions.reinvest().buildTransaction({
             'from':     address,
-            'gasPrice': self._w3.toWei(gwei, 'gwei'),
             'nonce':    self._w3.eth.get_transaction_count(address)
         })
         tx_fee_bnb = calc_token_value(transaction['gas'] * transaction['gasPrice'], WBNBTokenContract(self._w3).decimals)
