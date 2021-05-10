@@ -40,7 +40,7 @@ class DripStakingContract(Contract):
         return self._contract.functions.statsOf(address).call()
 
     @exception_decorator()
-    def reinvest(self, address: str, gwei: int, private_key: bytes) -> Optional[HexBytes]:
+    def reinvest(self, address: str, private_key: bytes) -> Optional[HexBytes]:
         transaction = self._contract.functions.reinvest().buildTransaction({
             'from':     address,
             'nonce':    self._w3.eth.get_transaction_count(address)
@@ -109,5 +109,5 @@ class DrippingAccount():
     def reinvested(self) -> float:
         return self._drip_staking_contract.stats(self.address)[12]
 
-    def reinvest(self, gwei: int) -> HexBytes:
-        return self._drip_staking_contract.reinvest(self.address, gwei, self._account.key)
+    def reinvest(self) -> HexBytes:
+        return self._drip_staking_contract.reinvest(self.address, self._account.key)

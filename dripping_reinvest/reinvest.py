@@ -3,7 +3,6 @@ from threading import Timer
 from web3 import Web3
 
 from . import log
-from .constants import TRANSACTION_GWEI
 from .dripping import DrippingAccount
 from .utils import get_usd_per_drip
 from .database import Database
@@ -54,5 +53,5 @@ class DrippingReinvest():
 
         if dividends_thres_reached:
             log.info('Reinvesting')
-            if self._dripping_account.reinvest(TRANSACTION_GWEI):
+            if self._dripping_account.reinvest():
                 log.info(f'{dividends:.2f} DRIP reinvested')
